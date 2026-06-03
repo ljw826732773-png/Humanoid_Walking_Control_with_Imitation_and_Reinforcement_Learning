@@ -1,0 +1,7 @@
+model_name,weight_file,episodes,max_steps,avg_steps,best_steps,avg_reward,best_reward,success_rate,video_path
+bc_last,bc_model.pth,10,1000,68.3,85,65.69955794639435,81.78550487189166,0.0,
+bc_best,bc_best_model.pth,10,1000,80.3,123,76.52997925339908,118.54140531815322,0.0,portfolio_results\bc_best_demo.mp4
+ppo_best_steps,best_ppo_model.pth,10,1000,4.4,7,3.559748798882321,5.893947621745363,0.0,
+ppo_best_reward,best_reward_model.pth,10,1000,3.7,4,2.989937231887628,3.902793382326647,0.0,
+ppo_longest,longest_steps_model.pth_11,10,1000,6.4,9,4.6807674982853005,6.547035152091859,0.0,
+sac,sac_model.pth,10,1000,15.7,24,10.466099027161562,18.258871516326824,0.0,

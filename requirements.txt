@@ -1,0 +1,18 @@
+# Deep Learning Frameworks
+torch>=2.0.0  # Core framework; install version compatible with your hardware (CUDA/CPU)
+
+# Reinforcement Learning & Robotics
+gymnasium
+gymnasium-robotics
+stable-baselines3
+mujoco
+loco-mujoco
+
+# Data Processing & Math
+numpy
+sci-kit-learn
+
+# Visualization & Media
+matplotlib
+opencv-python
+imageio

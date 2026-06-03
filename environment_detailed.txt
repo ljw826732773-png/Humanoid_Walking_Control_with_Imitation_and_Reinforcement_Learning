@@ -1,0 +1,20 @@
+# Numerical & Data Processing
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.6.1
+scipy==1.15.2
+
+# Reinforcement Learning & Simulation environments
+gymnasium==1.1.0
+gymnasium-robotics==1.3.1
+gym==0.26.2
+stable-baselines3==2.5.0
+mujoco==3.3.3
+loco-mujoco==0.3.0
+shimmy==2.0.0      # Often required by Gymnasium for compatibility
+
+# Visualization & Image Processing
+matplotlib==3.10.1
+opencv-python==4.11.0.86
+imageio==2.37.0
+moviepy==2.1.2     # Used for video editing/saving

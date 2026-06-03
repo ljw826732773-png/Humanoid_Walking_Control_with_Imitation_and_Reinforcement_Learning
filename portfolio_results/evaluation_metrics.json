@@ -1,0 +1,74 @@
+[
+  {
+    "model_name": "bc_last",
+    "weight_file": "bc_model.pth",
+    "episodes": 10,
+    "max_steps": 1000,
+    "avg_steps": 68.3,
+    "best_steps": 85,
+    "avg_reward": 65.69955794639435,
+    "best_reward": 81.78550487189166,
+    "success_rate": 0.0,
+    "video_path": ""
+  },
+  {
+    "model_name": "bc_best",
+    "weight_file": "bc_best_model.pth",
+    "episodes": 10,
+    "max_steps": 1000,
+    "avg_steps": 80.3,
+    "best_steps": 123,
+    "avg_reward": 76.52997925339908,
+    "best_reward": 118.54140531815322,
+    "success_rate": 0.0,
+    "video_path": "portfolio_results\\bc_best_demo.mp4"
+  },
+  {
+    "model_name": "ppo_best_steps",
+    "weight_file": "best_ppo_model.pth",
+    "episodes": 10,
+    "max_steps": 1000,
+    "avg_steps": 4.4,
+    "best_steps": 7,
+    "avg_reward": 3.559748798882321,
+    "best_reward": 5.893947621745363,
+    "success_rate": 0.0,
+    "video_path": ""
+  },
+  {
+    "model_name": "ppo_best_reward",
+    "weight_file": "best_reward_model.pth",
+    "episodes": 10,
+    "max_steps": 1000,
+    "avg_steps": 3.7,
+    "best_steps": 4,
+    "avg_reward": 2.989937231887628,
+    "best_reward": 3.902793382326647,
+    "success_rate": 0.0,
+    "video_path": ""
+  },
+  {
+    "model_name": "ppo_longest",
+    "weight_file": "longest_steps_model.pth_11",
+    "episodes": 10,
+    "max_steps": 1000,
+    "avg_steps": 6.4,
+    "best_steps": 9,
+    "avg_reward": 4.6807674982853005,
+    "best_reward": 6.547035152091859,
+    "success_rate": 0.0,
+    "video_path": ""
+  },
+  {
+    "model_name": "sac",
+    "weight_file": "sac_model.pth",
+    "episodes": 10,
+    "max_steps": 1000,
+    "avg_steps": 15.7,
+    "best_steps": 24,
+    "avg_reward": 10.466099027161562,
+    "best_reward": 18.258871516326824,
+    "success_rate": 0.0,
+    "video_path": ""
+  }
+]

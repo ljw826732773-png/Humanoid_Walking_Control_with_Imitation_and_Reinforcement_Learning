@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Large or redundant generated assets
+get-pip.py
+portfolio_retrain_bc_smoke/
+portfolio_results/video_contact_sheet/
+
+# Local runtime artifacts
+*.log
+*.tmp
+
+# Keep selected small model/video artifacts in the repository for portfolio demonstration.
