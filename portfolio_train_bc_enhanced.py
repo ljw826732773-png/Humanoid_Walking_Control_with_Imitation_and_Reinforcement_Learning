@@ -170,6 +170,184 @@ def train_bc(epochs, batch_size, output_dir, device, noise_std):
     return best_path, last_path, normalizer_path
 
 
+def evaluate_closed_loop(model, state_mean, state_std, action_mean, action_std, device, episodes, max_steps):
+    env = loco_mujoco.LocoEnv.make("HumanoidTorque.run", dataset_type="perfect")
+    state_mean_t = torch.tensor(state_mean, dtype=torch.float32, device=device)
+    state_std_t = torch.tensor(state_std, dtype=torch.float32, device=device)
+    steps_list = []
+    rewards = []
+
+    model.eval()
+    with torch.no_grad():
+        for _ in range(episodes):
+            obs = env.reset()
+            total_reward = 0.0
+            steps = 0
+            for _ in range(max_steps):
+                obs_t = torch.tensor(obs, dtype=torch.float32, device=device).unsqueeze(0)
+                norm_obs = (obs_t - state_mean_t) / state_std_t
+                norm_action = model(norm_obs).squeeze(0).cpu().numpy()
+                action = norm_action * action_std + action_mean
+                action = np.clip(action, -1.0, 1.0)
+                obs, reward, done, _ = env.step(action)
+                total_reward += float(reward)
+                steps += 1
+                if done:
+                    break
+            steps_list.append(steps)
+            rewards.append(total_reward)
+
+    return {
+        "avg_steps": float(np.mean(steps_list)),
+        "best_steps": int(np.max(steps_list)),
+        "avg_reward": float(np.mean(rewards)),
+        "best_reward": float(np.max(rewards)),
+    }
+
+
+def train_bc_rollout_selected(
+    epochs,
+    batch_size,
+    output_dir,
+    device,
+    noise_std,
+    eval_every,
+    selection_episodes,
+    selection_max_steps,
+):
+    os.makedirs(output_dir, exist_ok=True)
+    env = loco_mujoco.LocoEnv.make("HumanoidTorque.run", dataset_type="perfect")
+    dataset = env.create_dataset()
+    states = dataset["states"]
+    actions = dataset["actions"]
+
+    train_states, val_states, train_actions, val_actions = train_test_split(
+        states, actions, test_size=0.2, random_state=42
+    )
+    state_mean, state_std, action_mean, action_std = compute_normalizer(train_states, train_actions)
+    normalizer_path = os.path.join(output_dir, "bc_improved_normalizer.npz")
+    save_normalizer(normalizer_path, state_mean, state_std, action_mean, action_std)
+
+    train_loader = DataLoader(
+        NormalizedBCDataset(
+            train_states,
+            train_actions,
+            state_mean,
+            state_std,
+            action_mean,
+            action_std,
+            noise_std=noise_std,
+        ),
+        batch_size=batch_size,
+        shuffle=True,
+    )
+    val_loader = DataLoader(
+        NormalizedBCDataset(val_states, val_actions, state_mean, state_std, action_mean, action_std),
+        batch_size=batch_size,
+        shuffle=False,
+    )
+
+    model = BCModel().to(device)
+    criterion = nn.MSELoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+    best_path = os.path.join(output_dir, "bc_improved_best.pth")
+    last_path = os.path.join(output_dir, "bc_improved_last.pth")
+    log_path = os.path.join(output_dir, "bc_improved_training_log.csv")
+    rollout_log_path = os.path.join(output_dir, "bc_improved_rollout_selection.csv")
+
+    best_rollout_steps = -1.0
+    start = time.time()
+
+    with open(log_path, "w", encoding="utf-8", newline="") as train_f, open(
+        rollout_log_path, "w", encoding="utf-8", newline=""
+    ) as rollout_f:
+        train_writer = csv.DictWriter(train_f, fieldnames=["epoch", "train_loss", "val_loss", "elapsed_sec"])
+        rollout_writer = csv.DictWriter(
+            rollout_f,
+            fieldnames=["epoch", "avg_steps", "best_steps", "avg_reward", "best_reward", "selected"],
+        )
+        train_writer.writeheader()
+        rollout_writer.writeheader()
+
+        for epoch in range(1, epochs + 1):
+            model.train()
+            train_loss = 0.0
+            for state_batch, action_batch in train_loader:
+                state_batch = state_batch.to(device)
+                action_batch = action_batch.to(device)
+                pred_actions = model(state_batch)
+                loss = criterion(pred_actions, action_batch)
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                train_loss += loss.item()
+
+            model.eval()
+            val_loss = 0.0
+            with torch.no_grad():
+                for state_batch, action_batch in val_loader:
+                    state_batch = state_batch.to(device)
+                    action_batch = action_batch.to(device)
+                    pred_actions = model(state_batch)
+                    val_loss += criterion(pred_actions, action_batch).item()
+
+            avg_train_loss = train_loss / len(train_loader)
+            avg_val_loss = val_loss / len(val_loader)
+            elapsed = time.time() - start
+            train_writer.writerow(
+                {
+                    "epoch": epoch,
+                    "train_loss": avg_train_loss,
+                    "val_loss": avg_val_loss,
+                    "elapsed_sec": elapsed,
+                }
+            )
+            train_f.flush()
+
+            should_eval = epoch == 1 or epoch % eval_every == 0 or epoch == epochs
+            if should_eval:
+                rollout = evaluate_closed_loop(
+                    model,
+                    state_mean,
+                    state_std,
+                    action_mean,
+                    action_std,
+                    device,
+                    episodes=selection_episodes,
+                    max_steps=selection_max_steps,
+                )
+                selected = rollout["avg_steps"] > best_rollout_steps
+                if selected:
+                    best_rollout_steps = rollout["avg_steps"]
+                    torch.save(model.state_dict(), best_path)
+                rollout_writer.writerow(
+                    {
+                        "epoch": epoch,
+                        "avg_steps": rollout["avg_steps"],
+                        "best_steps": rollout["best_steps"],
+                        "avg_reward": rollout["avg_reward"],
+                        "best_reward": rollout["best_reward"],
+                        "selected": selected,
+                    }
+                )
+                rollout_f.flush()
+                print(
+                    f"epoch {epoch}/{epochs}, train_loss={avg_train_loss:.6f}, "
+                    f"val_loss={avg_val_loss:.6f}, rollout_avg_steps={rollout['avg_steps']:.1f}, "
+                    f"rollout_best_steps={rollout['best_steps']}, selected={selected}, elapsed={elapsed:.1f}s"
+                )
+            elif epoch % 10 == 0:
+                print(
+                    f"epoch {epoch}/{epochs}, train_loss={avg_train_loss:.6f}, "
+                    f"val_loss={avg_val_loss:.6f}, best_rollout_avg_steps={best_rollout_steps:.1f}, "
+                    f"elapsed={elapsed:.1f}s"
+                )
+
+    torch.save(model.state_dict(), last_path)
+    return best_path, last_path, normalizer_path
+
+
 def record_bc(model_path, normalizer_path, output_dir, device, episodes=10, max_steps=1000):
     env = loco_mujoco.LocoEnv.make("HumanoidTorque.run", dataset_type="perfect")
     state_mean, state_std, action_mean, action_std = load_normalizer(normalizer_path)
@@ -255,6 +433,10 @@ def main():
     parser.add_argument("--eval-episodes", type=int, default=10)
     parser.add_argument("--max-steps", type=int, default=1000)
     parser.add_argument("--noise-std", type=float, default=0.0)
+    parser.add_argument("--select-by-rollout", action="store_true")
+    parser.add_argument("--selection-eval-every", type=int, default=5)
+    parser.add_argument("--selection-episodes", type=int, default=5)
+    parser.add_argument("--selection-max-steps", type=int, default=1000)
     args = parser.parse_args()
 
     np.random.seed(42)
@@ -263,13 +445,25 @@ def main():
     print(f"using device: {device}")
     print(f"state noise std: {args.noise_std}")
 
-    best_path, _, normalizer_path = train_bc(
-        args.epochs,
-        args.batch_size,
-        args.output_dir,
-        device,
-        args.noise_std,
-    )
+    if args.select_by_rollout:
+        best_path, _, normalizer_path = train_bc_rollout_selected(
+            args.epochs,
+            args.batch_size,
+            args.output_dir,
+            device,
+            args.noise_std,
+            args.selection_eval_every,
+            args.selection_episodes,
+            args.selection_max_steps,
+        )
+    else:
+        best_path, _, normalizer_path = train_bc(
+            args.epochs,
+            args.batch_size,
+            args.output_dir,
+            device,
+            args.noise_std,
+        )
     record_bc(
         best_path,
         normalizer_path,

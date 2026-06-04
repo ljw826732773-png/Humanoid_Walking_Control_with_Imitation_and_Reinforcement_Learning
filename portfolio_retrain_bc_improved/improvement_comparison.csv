@@ -5,3 +5,4 @@ enhanced_bc_20_no_noise,yes,0.0,20,212.3,300,186.88,277.48,Normalization only
 enhanced_bc_50_no_noise,yes,0.0,50,624.3,785,582.30,730.91,Best closed-loop result
 enhanced_bc_100_no_noise,yes,0.0,100,281.6,364,247.87,334.61,Longer training starts to degrade control
 enhanced_bc_800_noise_002,yes,0.02,800,94.8,127,87.39,121.86,Noise plus long training overfits/degrades
+rollout_selected_bc,yes,0.0,80,839.2,1000,776.75,951.50,Best model selected by MuJoCo closed-loop rollout
