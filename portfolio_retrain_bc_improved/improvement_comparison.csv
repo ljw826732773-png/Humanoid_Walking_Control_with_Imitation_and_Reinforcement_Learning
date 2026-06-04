@@ -1,0 +1,7 @@
+experiment,normalization,state_noise,epochs,avg_steps,best_steps,avg_reward,best_reward,note
+baseline_bc_retrain,no,0.0,800,97.5,133,93.76,128.35,Original portfolio_train_bc.py result
+enhanced_bc_20,no_action_state_noise,0.02,20,146.0,193,133.45,177.37,Normalization plus light noise
+enhanced_bc_20_no_noise,yes,0.0,20,212.3,300,186.88,277.48,Normalization only
+enhanced_bc_50_no_noise,yes,0.0,50,624.3,785,582.30,730.91,Best closed-loop result
+enhanced_bc_100_no_noise,yes,0.0,100,281.6,364,247.87,334.61,Longer training starts to degrade control
+enhanced_bc_800_noise_002,yes,0.02,800,94.8,127,87.39,121.86,Noise plus long training overfits/degrades

@@ -14,6 +14,7 @@ Thumbs.db
 get-pip.py
 portfolio_retrain_bc_smoke/
 portfolio_results/video_contact_sheet/
+portfolio_retrain_bc_enhanced*/
 
 # Local runtime artifacts
 *.log

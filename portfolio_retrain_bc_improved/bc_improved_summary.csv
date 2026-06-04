@@ -1,0 +1,2 @@
+episodes,avg_steps,best_steps,avg_reward,best_reward,video_path
+10,624.2999877929688,785,582.2996215820312,730.9126586914062,portfolio_retrain_bc_enhanced_50_no_noise\bc_enhanced_demo.mp4
