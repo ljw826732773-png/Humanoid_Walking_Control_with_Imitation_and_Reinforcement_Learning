@@ -246,6 +246,17 @@ def write_markdown(output_dir, data, images):
             rel = os.path.basename(image)
             lines.append(f"- ![{rel}]({rel})")
 
+    keyframe_path = os.path.join(output_dir, "keyframes", "bc_improved_keyframes.png")
+    if os.path.exists(keyframe_path):
+        lines.extend(
+            [
+                "",
+                "## Video Keyframes",
+                "",
+                "- ![bc_improved_keyframes.png](keyframes/bc_improved_keyframes.png)",
+            ]
+        )
+
     path = os.path.join(output_dir, "portfolio_summary.md")
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")

@@ -30,3 +30,7 @@ The sweep shows that naive action smoothing hurts this controller, so the final 
 - ![report_rollout_selection.svg](report_rollout_selection.svg)
 - ![report_stability_diagnostics.svg](report_stability_diagnostics.svg)
 - ![report_robustness_sweep.svg](report_robustness_sweep.svg)
+
+## Video Keyframes
+
+- ![bc_improved_keyframes.png](keyframes/bc_improved_keyframes.png)

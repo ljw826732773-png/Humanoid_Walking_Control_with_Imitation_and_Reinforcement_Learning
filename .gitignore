@@ -17,6 +17,7 @@ portfolio_results/video_contact_sheet/
 portfolio_retrain_bc_enhanced*/
 portfolio_retrain_bc_rollout_selected/
 portfolio_dagger_bc*/
+portfolio_retrain_bc_improved/keyframes/bc_improved_keyframe_*.png
 
 # Local runtime artifacts
 *.log
