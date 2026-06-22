@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="500" viewBox="0 0 980 500">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#222}
+.title{font-size:22px;font-weight:700}
+.axis{font-size:12px;fill:#555}
+.label{font-size:11px;fill:#333}
+.grid{stroke:#ddd;stroke-width:1}
+.line{fill:none;stroke-width:2.5}
+</style>
+<rect width="980" height="500" fill="#fff"/>
+<text class="title" x="28" y="34">Closed-loop Walking Performance</text>
+<line class="grid" x1="70" y1="370.0" x2="956" y2="370.0"/>
+<text class="axis" x="14" y="374.0">0</text>
+<line class="grid" x1="70" y1="310.0" x2="956" y2="310.0"/>
+<text class="axis" x="14" y="314.0">188</text>
+<line class="grid" x1="70" y1="250.0" x2="956" y2="250.0"/>
+<text class="axis" x="14" y="254.0">376</text>
+<line class="grid" x1="70" y1="190.0" x2="956" y2="190.0"/>
+<text class="axis" x="14" y="194.0">564</text>
+<line class="grid" x1="70" y1="130.0" x2="956" y2="130.0"/>
+<text class="axis" x="14" y="134.0">752</text>
+<line class="grid" x1="70" y1="70.0" x2="956" y2="70.0"/>
+<text class="axis" x="14" y="74.0">940</text>
+<text class="axis" x="20" y="52">Average steps</text>
+<rect x="80.0" y="338.9" width="115.1" height="31.1" fill="#8a8f98"/>
+<text class="label" x="137.6" y="332.9" text-anchor="middle">97.5</text>
+<text class="label" transform="translate(137.6,388.0) rotate(35)" text-anchor="start">baseline_bc_retrain</text>
+<rect x="205.1" y="323.4" width="115.1" height="46.6" fill="#8a8f98"/>
+<text class="label" x="262.7" y="317.4" text-anchor="middle">146.0</text>
+<text class="label" transform="translate(262.7,388.0) rotate(35)" text-anchor="start">enhanced_bc_20</text>
+<rect x="330.3" y="302.2" width="115.1" height="67.8" fill="#8a8f98"/>
+<text class="label" x="387.9" y="296.2" text-anchor="middle">212.3</text>
+<text class="label" transform="translate(387.9,388.0) rotate(35)" text-anchor="start">enhanced_bc_20_no_noise</text>
+<rect x="455.4" y="170.7" width="115.1" height="199.3" fill="#8a8f98"/>
+<text class="label" x="513.0" y="164.7" text-anchor="middle">624.3</text>
+<text class="label" transform="translate(513.0,388.0) rotate(35)" text-anchor="start">enhanced_bc_50_no_noise</text>
+<rect x="580.6" y="280.1" width="115.1" height="89.9" fill="#8a8f98"/>
+<text class="label" x="638.1" y="274.1" text-anchor="middle">281.6</text>
+<text class="label" transform="translate(638.1,388.0) rotate(35)" text-anchor="start">enhanced_bc_100_no_noise</text>
+<rect x="705.7" y="339.7" width="115.1" height="30.3" fill="#8a8f98"/>
+<text class="label" x="763.3" y="333.7" text-anchor="middle">94.8</text>
+<text class="label" transform="translate(763.3,388.0) rotate(35)" text-anchor="start">enhanced_bc_800_noise...</text>
+<rect x="830.9" y="102.1" width="115.1" height="267.9" fill="#1f77b4"/>
+<text class="label" x="888.4" y="96.1" text-anchor="middle">839.2</text>
+<text class="label" transform="translate(888.4,388.0) rotate(35)" text-anchor="start">rollout_selected_bc</text>
+</svg>

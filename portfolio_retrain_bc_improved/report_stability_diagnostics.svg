@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460">
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#222}
+.title{font-size:22px;font-weight:700}
+.axis{font-size:12px;fill:#555}
+.label{font-size:11px;fill:#333}
+.grid{stroke:#ddd;stroke-width:1}
+.line{fill:none;stroke-width:2.5}
+</style>
+<rect width="900" height="460" fill="#fff"/>
+<text class="title" x="28" y="34">Episode Stability Diagnostics</text>
+<line class="grid" x1="70" y1="398.0" x2="872" y2="398.0"/>
+<text class="axis" x="14" y="402.0">0</text>
+<line class="grid" x1="70" y1="332.0" x2="872" y2="332.0"/>
+<text class="axis" x="14" y="336.0">216</text>
+<line class="grid" x1="70" y1="266.0" x2="872" y2="266.0"/>
+<text class="axis" x="14" y="270.0">432</text>
+<line class="grid" x1="70" y1="200.0" x2="872" y2="200.0"/>
+<text class="axis" x="14" y="204.0">648</text>
+<line class="grid" x1="70" y1="134.0" x2="872" y2="134.0"/>
+<text class="axis" x="14" y="138.0">864</text>
+<line class="grid" x1="70" y1="68.0" x2="872" y2="68.0"/>
+<text class="axis" x="14" y="72.0">1.08e+03</text>
+<text class="axis" x="450.0" y="444" text-anchor="middle">Episode</text>
+<text class="axis" x="20" y="50">Steps / scaled action delta</text>
+<polyline class="line" points="70.0,92.4 159.1,183.8 248.2,92.4 337.3,203.1 426.4,92.4 515.6,176.2 604.7,216.2 693.8,175.2 782.9,92.4 872.0,149.3" stroke="#2ca02c"/>
+<circle cx="70.0" cy="92.4" r="3.2" fill="#2ca02c"/>
+<circle cx="159.1" cy="183.8" r="3.2" fill="#2ca02c"/>
+<circle cx="248.2" cy="92.4" r="3.2" fill="#2ca02c"/>
+<circle cx="337.3" cy="203.1" r="3.2" fill="#2ca02c"/>
+<circle cx="426.4" cy="92.4" r="3.2" fill="#2ca02c"/>
+<circle cx="515.6" cy="176.2" r="3.2" fill="#2ca02c"/>
+<circle cx="604.7" cy="216.2" r="3.2" fill="#2ca02c"/>
+<circle cx="693.8" cy="175.2" r="3.2" fill="#2ca02c"/>
+<circle cx="782.9" cy="92.4" r="3.2" fill="#2ca02c"/>
+<circle cx="872.0" cy="149.3" r="3.2" fill="#2ca02c"/>
+<rect x="692" y="76" width="14" height="4" fill="#2ca02c"/>
+<text class="axis" x="712" y="81">steps</text>
+<polyline class="line" points="70.0,367.5 159.1,367.6 248.2,367.9 337.3,367.3 426.4,367.8 515.6,367.0 604.7,367.4 693.8,367.2 782.9,368.2 872.0,366.9" stroke="#d62728"/>
+<circle cx="70.0" cy="367.5" r="3.2" fill="#d62728"/>
+<circle cx="159.1" cy="367.6" r="3.2" fill="#d62728"/>
+<circle cx="248.2" cy="367.9" r="3.2" fill="#d62728"/>
+<circle cx="337.3" cy="367.3" r="3.2" fill="#d62728"/>
+<circle cx="426.4" cy="367.8" r="3.2" fill="#d62728"/>
+<circle cx="515.6" cy="367.0" r="3.2" fill="#d62728"/>
+<circle cx="604.7" cy="367.4" r="3.2" fill="#d62728"/>
+<circle cx="693.8" cy="367.2" r="3.2" fill="#d62728"/>
+<circle cx="782.9" cy="368.2" r="3.2" fill="#d62728"/>
+<circle cx="872.0" cy="366.9" r="3.2" fill="#d62728"/>
+<rect x="692" y="96" width="14" height="4" fill="#d62728"/>
+<text class="axis" x="712" y="101">action delta x1000</text>
+</svg>

@@ -42,6 +42,8 @@
 ├── portfolio_train_bc.py           # 新增：独立 BC 重训脚本
 ├── portfolio_train_bc_enhanced.py  # 新增：归一化增强版 BC 训练脚本
 ├── portfolio_stability_diagnostics.py # 新增：稳定性诊断脚本
+├── portfolio_robustness_sweep.py   # 新增：多 seed 与动作平滑鲁棒性评估
+├── portfolio_generate_report.py    # 新增：自动生成实验报告与 SVG 图表
 ├── portfolio_dagger_bc.py          # 新增：近似 DAgger 实验入口
 ├── portfolio_evaluate.py           # 新增：统一模型评估脚本
 ├── requirements_portfolio.txt      # 当前验证可运行的核心依赖
@@ -216,6 +218,48 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_stability_diagnostics.py
 
 诊断结果与主评估结果同量级，说明增强版策略的提升不是单个视频偶然现象。
 
+## 鲁棒性与动作平滑 Sweep
+
+新增 `portfolio_robustness_sweep.py`，用于在多个随机种子和不同动作平滑系数下重复评估增强版 BC 策略：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_robustness_sweep.py --num-seeds 3 --episodes-per-seed 2 --smoothing-values 0.0,0.2,0.4 --max-steps 1000
+```
+
+输出文件：
+
+- `portfolio_retrain_bc_improved/robustness_sweep.csv`
+- `portfolio_retrain_bc_improved/robustness_summary.csv`
+
+实测结果：
+
+| 动作平滑系数 | 回合数 | 平均步数 | 步数标准差 | 最好步数 | 跑满 1000 步比例 | 平均奖励 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.0 | 6 | 930.2 | 79.9 | 1000 | 50.0% | 853.36 |
+| 0.2 | 6 | 333.3 | 151.6 | 528 | 0.0% | 298.32 |
+| 0.4 | 6 | 164.2 | 54.0 | 269 | 0.0% | 147.74 |
+
+该实验说明：对当前策略直接做动作平滑后处理并不会提升稳定性，反而破坏了已学到的闭环步态节律。因此最终展示策略保留原始归一化 BC 输出，动作平滑应作为训练目标或奖励约束设计，而不是简单部署后处理。
+
+## 自动实验报告
+
+新增 `portfolio_generate_report.py`，可以从已有 CSV 自动生成项目总结和可视化图表：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_generate_report.py
+```
+
+输出文件：
+
+- `portfolio_retrain_bc_improved/portfolio_summary.md`
+- `portfolio_retrain_bc_improved/report_steps_comparison.svg`
+- `portfolio_retrain_bc_improved/report_training_loss.svg`
+- `portfolio_retrain_bc_improved/report_rollout_selection.svg`
+- `portfolio_retrain_bc_improved/report_stability_diagnostics.svg`
+- `portfolio_retrain_bc_improved/report_robustness_sweep.svg`
+
+图表脚本使用 Python 标准库直接写 SVG，不依赖 Matplotlib，避免部分 Windows/conda 环境中绘图库原生崩溃的问题。
+
 ## 实验入口：近似 DAgger 数据聚合
 
 新增 `portfolio_dagger_bc.py` 作为 DAgger 方向的实验入口。它会：
@@ -253,6 +297,7 @@ BC 的局限也很明显：它能学到短时步态，但长期稳定性不足�
 - 使用增强版 BC 作为预训练策略，再接 PPO/SAC 进行强化学习微调。
 - 将近似 DAgger 扩展为真正带专家控制器的在线数据聚合。
 - 优化奖励函数，加入躯干姿态、足底接触、动作平滑和前向速度约束。
+- 将动作平滑从部署后处理改为训练期正则项或奖励项，避免破坏已有闭环步态节律。
 - 将 3/10 个满步回合提升到 10/10 个回合都稳定跑满 1000 步。
 - 对不同随机种子重复实验，进一步验证增强版结果的稳定性。
 
@@ -265,4 +310,6 @@ BC 的局限也很明显：它能学到短时步态，但长期稳定性不足�
 - 构建统一评估流程，支持模型权重加载、平均步数/奖励统计、MuJoCo 渲染录制和实验结果可视化。
 - 完成状态/动作归一化与闭环 rollout 选模，将 BC 评估平均步数从 97.5 提升到 839.2，最好步数从 133 提升到 1000。
 - 增加稳定性诊断指标，统计躯干高度、动作幅度和动作变化量，辅助分析策略长期失稳原因。
+- 设计多 seed 鲁棒性与动作平滑 sweep 实验，验证原始增强版 BC 在 6 回合补充评估中平均达到 930.2 步，并发现简单动作平滑会显著削弱步态稳定性。
+- 编写自动报告生成脚本，将训练曲线、闭环选模、稳定性诊断和鲁棒性 sweep 输出为 Markdown 与 SVG 图表，提升实验复现和展示效率。
 - 对比不同算法在短时步态稳定性和存活步数上的表现，分析归一化、训练轮数、验证集 MSE 和闭环控制稳定性之间的关系。
