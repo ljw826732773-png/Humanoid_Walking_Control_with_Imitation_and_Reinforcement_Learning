@@ -16,6 +16,7 @@ portfolio_retrain_bc_smoke/
 portfolio_results/video_contact_sheet/
 portfolio_retrain_bc_enhanced*/
 portfolio_retrain_bc_rollout_selected/
+portfolio_dagger_bc*/
 
 # Local runtime artifacts
 *.log

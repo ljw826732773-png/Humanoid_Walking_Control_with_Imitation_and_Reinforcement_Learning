@@ -41,6 +41,8 @@
 ├── sac_11.py                       # SAC 训练与测试脚本
 ├── portfolio_train_bc.py           # 新增：独立 BC 重训脚本
 ├── portfolio_train_bc_enhanced.py  # 新增：归一化增强版 BC 训练脚本
+├── portfolio_stability_diagnostics.py # 新增：稳定性诊断脚本
+├── portfolio_dagger_bc.py          # 新增：近似 DAgger 实验入口
 ├── portfolio_evaluate.py           # 新增：统一模型评估脚本
 ├── requirements_portfolio.txt      # 当前验证可运行的核心依赖
 ├── *.pth                           # 已训练模型权重
@@ -127,13 +129,14 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_train_bc.py --epochs 800 -
 | 9 | 99 | 95.36 |
 | 10 | 104 | 99.18 |
 
-## 已完成改进：归一化 + 闭环选模
+## 已完成改进：归一化 + 闭环选模 + 稳定性诊断
 
 针对原始 BC 闭环控制容易失稳的问题，新增 `portfolio_train_bc_enhanced.py`，实现了两项直接改进：
 
 - **状态归一化**：使用训练集状态均值和标准差标准化输入，降低不同状态维度量纲差异。
 - **动作归一化**：训练网络预测标准化动作，再在部署时反归一化回 MuJoCo 控制动作。
 - **闭环 rollout 选模**：训练过程中定期在 MuJoCo 中真实 rollout，用平均存活步数选择最佳 checkpoint，避免只按验证集 MSE 选模型。
+- **稳定性诊断**：额外统计躯干高度、动作幅度和动作变化量，用于判断策略是否只是偶然跑得远。
 
 运行方式：
 
@@ -187,6 +190,43 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_train_bc_enhanced.py --epo
 
 对照实验也显示：并不是训练越久越好。增强版在 100 epoch 和 800 epoch 设置下闭环控制反而退化，说明该任务中验证集 MSE 更低不一定意味着仿真闭环更稳定，需要用实际 episode 步数作为最终评估指标。
 
+## 稳定性诊断
+
+运行方式：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_stability_diagnostics.py
+```
+
+诊断输出：
+
+- `portfolio_retrain_bc_improved/stability_diagnostics.csv`
+- `portfolio_retrain_bc_improved/stability_summary.csv`
+
+当前增强版策略的 10 回合稳定性诊断结果：
+
+| 指标 | 数值 |
+| --- | ---: |
+| 平均步数 | 820.3 |
+| 最好步数 | 1000 |
+| 跑满 1000 步回合数 | 4/10 |
+| 平均奖励 | 756.08 |
+| 平均动作 L2 范数 | 0.540 |
+| 平均动作变化量 | 0.100 |
+
+诊断结果与主评估结果同量级，说明增强版策略的提升不是单个视频偶然现象。
+
+## 实验入口：近似 DAgger 数据聚合
+
+新增 `portfolio_dagger_bc.py` 作为 DAgger 方向的实验入口。它会：
+
+1. 使用当前增强版 BC 策略在 MuJoCo 中 rollout。
+2. 收集策略偏离专家轨迹后的访问状态。
+3. 用专家数据集中最近邻状态的动作作为近似专家标签。
+4. 合并专家数据和访问状态数据继续训练。
+
+说明：这不是严格意义上的 DAgger，因为当前项目没有在线专家控制器，只能用专家数据最近邻近似标注。该脚本已作为后续研究入口保留，但未纳入主结果；主结果仍以已验证的归一化 + 闭环选模 BC 为准。
+
 ## 已有权重评估结果
 
 使用 `portfolio_evaluate.py --episodes 10 --max-steps 1000 --demo-model bc_best` 对现有权重进行评估：
@@ -211,7 +251,7 @@ BC 的局限也很明显：它能学到短时步态，但长期稳定性不足�
 ## 后续可改进方向
 
 - 使用增强版 BC 作为预训练策略，再接 PPO/SAC 进行强化学习微调。
-- 使用 DAgger 或在线数据聚合缓解 BC 的分布偏移问题。
+- 将近似 DAgger 扩展为真正带专家控制器的在线数据聚合。
 - 优化奖励函数，加入躯干姿态、足底接触、动作平滑和前向速度约束。
 - 将 3/10 个满步回合提升到 10/10 个回合都稳定跑满 1000 步。
 - 对不同随机种子重复实验，进一步验证增强版结果的稳定性。
@@ -224,4 +264,5 @@ BC 的局限也很明显：它能学到短时步态，但长期稳定性不足�
 - 使用 PyTorch 实现 BC、PPO、SAC 等策略网络，基于专家轨迹和奖励反馈训练人形机器人短时行走控制策略。
 - 构建统一评估流程，支持模型权重加载、平均步数/奖励统计、MuJoCo 渲染录制和实验结果可视化。
 - 完成状态/动作归一化与闭环 rollout 选模，将 BC 评估平均步数从 97.5 提升到 839.2，最好步数从 133 提升到 1000。
+- 增加稳定性诊断指标，统计躯干高度、动作幅度和动作变化量，辅助分析策略长期失稳原因。
 - 对比不同算法在短时步态稳定性和存活步数上的表现，分析归一化、训练轮数、验证集 MSE 和闭环控制稳定性之间的关系。

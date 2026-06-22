@@ -1,0 +1,2 @@
+episodes,avg_steps,best_steps,avg_reward,avg_height,min_height,avg_action_norm,avg_action_delta
+10,820.3,1000,756.077751764324,-0.03118914284724104,-0.4809436598675277,0.5404178571472007,0.09981596003277722
