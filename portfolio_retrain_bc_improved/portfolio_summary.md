@@ -23,6 +23,11 @@ This report is generated from the saved CSV artifacts in `portfolio_retrain_bc_i
 
 The sweep shows that naive action smoothing hurts this controller, so the final policy uses the raw normalized BC action.
 
+## Artifact Validation
+
+- Passed checks: 25/25
+- Failed checks: 0
+
 ## Figures
 
 - ![report_steps_comparison.svg](report_steps_comparison.svg)

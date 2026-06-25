@@ -240,6 +240,21 @@ def write_markdown(output_dir, data, images):
             ]
         )
 
+    validation_rows = data.get("validation", [])
+    if validation_rows:
+        passed = sum(1 for row in validation_rows if row.get("ok") == "True")
+        total = len(validation_rows)
+        failed = total - passed
+        lines.extend(
+            [
+                "## Artifact Validation",
+                "",
+                f"- Passed checks: {passed}/{total}",
+                f"- Failed checks: {failed}",
+                "",
+            ]
+        )
+
     lines.extend(["## Figures", ""])
     for image in images:
         if image:
@@ -277,6 +292,7 @@ def main():
         "stability_summary": read_csv(os.path.join(args.output_dir, "stability_summary.csv")),
         "bc_summary": read_csv(os.path.join(args.output_dir, "bc_improved_summary.csv")),
         "robustness_summary": read_csv(os.path.join(args.output_dir, "robustness_summary.csv")),
+        "validation": read_csv(os.path.join(args.output_dir, "artifact_validation.csv")),
     }
 
     images = [

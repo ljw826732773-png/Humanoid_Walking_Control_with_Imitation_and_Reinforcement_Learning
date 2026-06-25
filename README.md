@@ -45,6 +45,9 @@
 ├── portfolio_robustness_sweep.py   # 新增：多 seed 与动作平滑鲁棒性评估
 ├── portfolio_generate_report.py    # 新增：自动生成实验报告与 SVG 图表
 ├── portfolio_extract_keyframes.py  # 新增：从展示视频提取关键帧总览图
+├── portfolio_validate_artifacts.py # 新增：项目产物完整性与指标阈值校验
+├── portfolio_cli.py                # 新增：统一命令入口
+├── EXPERIMENTS.md                  # 新增：实验复现命令与结果边界说明
 ├── portfolio_dagger_bc.py          # 新增：近似 DAgger 实验入口
 ├── portfolio_evaluate.py           # 新增：统一模型评估脚本
 ├── requirements_portfolio.txt      # 当前验证可运行的核心依赖
@@ -71,6 +74,24 @@ python -m pip install -r requirements_portfolio.txt
 ```
 
 注意：`loco-mujoco==0.3.0` 依赖 `mujoco==2.3.7`。如果直接安装 `mujoco==3.3.3`，会和 `loco-mujoco==0.3.0` 产生版本冲突。
+
+## 一键入口
+
+新增 `portfolio_cli.py` 作为统一命令入口：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py validate
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py report
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py keyframes
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py showcase
+```
+
+- `validate`：检查核心脚本、模型权重、CSV 指标、视频、关键帧和视频元数据。
+- `report`：根据已有 CSV 重新生成 Markdown/SVG 报告。
+- `keyframes`：从最终展示视频重新生成关键帧总览图。
+- `showcase`：依次生成关键帧、校验产物并更新报告。
+
+更多复现实验命令见 `EXPERIMENTS.md`。
 
 ## 一键评估已有权重
 
@@ -261,6 +282,27 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_generate_report.py
 
 图表脚本使用 Python 标准库直接写 SVG，不依赖 Matplotlib，避免部分 Windows/conda 环境中绘图库原生崩溃的问题。
 
+## 产物完整性校验
+
+新增 `portfolio_validate_artifacts.py`，用于检查当前仓库中的展示产物是否完整：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py validate
+```
+
+当前校验结果全部通过，包括：
+
+- 核心脚本、README、依赖文件、模型权重和归一化文件存在。
+- 主结果平均步数 `839.2 >= 800`，最好步数 `1000 >= 1000`。
+- 稳定性诊断平均步数 `820.3 >= 700`。
+- 鲁棒性 sweep 中原始动作平均步数 `930.2 >= 800`。
+- 最终展示视频可打开，元数据为 8392 帧、30 FPS、约 279.7 秒、640x480。
+
+校验输出：
+
+- `portfolio_retrain_bc_improved/artifact_validation.json`
+- `portfolio_retrain_bc_improved/artifact_validation.csv`
+
 ## 展示视频关键帧
 
 为了避免只凭一个视频文件难以判断效果，新增 `portfolio_extract_keyframes.py`，可以从最终展示视频中抽取多个时间点并生成关键帧总览图：
@@ -329,4 +371,5 @@ BC 的局限也很明显：它能学到短时步态，但长期稳定性不足�
 - 设计多 seed 鲁棒性与动作平滑 sweep 实验，验证原始增强版 BC 在 6 回合补充评估中平均达到 930.2 步，并发现简单动作平滑会显著削弱步态稳定性。
 - 编写自动报告生成脚本，将训练曲线、闭环选模、稳定性诊断和鲁棒性 sweep 输出为 Markdown 与 SVG 图表，提升实验复现和展示效率。
 - 生成最终展示视频关键帧总览图，用 14.0s 至 265.7s 的多时间点画面辅助说明模型具备较长时间连续行走能力。
+- 增加统一 CLI 和 artifact validation 流程，对核心脚本、模型、指标、视频元数据和展示材料进行一键校验，提升项目交付完整度。
 - 对比不同算法在短时步态稳定性和存活步数上的表现，分析归一化、训练轮数、验证集 MSE 和闭环控制稳定性之间的关系。
