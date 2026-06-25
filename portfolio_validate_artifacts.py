@@ -22,6 +22,7 @@ REQUIRED_FILES = [
     "portfolio_robustness_sweep.py",
     "portfolio_generate_report.py",
     "portfolio_extract_keyframes.py",
+    "portfolio_generate_results_index.py",
     "portfolio_validate_artifacts.py",
     "portfolio_retrain_bc_improved/bc_improved_best.pth",
     "portfolio_retrain_bc_improved/bc_improved_normalizer.npz",
@@ -32,6 +33,9 @@ REQUIRED_FILES = [
     "portfolio_retrain_bc_improved/portfolio_summary.md",
     "portfolio_retrain_bc_improved/bc_improved_demo.mp4",
     "portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png",
+    "EXPERIMENTS.md",
+    "MODEL_CARD.md",
+    "RESULTS.md",
 ]
 
 

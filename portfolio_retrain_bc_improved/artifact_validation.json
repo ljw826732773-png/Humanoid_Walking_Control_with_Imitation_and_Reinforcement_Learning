@@ -45,6 +45,11 @@
     "detail": "exists"
   },
   {
+    "name": "file:portfolio_generate_results_index.py",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
     "name": "file:portfolio_validate_artifacts.py",
     "ok": true,
     "detail": "exists"
@@ -91,6 +96,21 @@
   },
   {
     "name": "file:portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
+    "name": "file:EXPERIMENTS.md",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
+    "name": "file:MODEL_CARD.md",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
+    "name": "file:RESULTS.md",
     "ok": true,
     "detail": "exists"
   },

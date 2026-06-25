@@ -8,6 +8,7 @@ file:portfolio_stability_diagnostics.py,True,exists
 file:portfolio_robustness_sweep.py,True,exists
 file:portfolio_generate_report.py,True,exists
 file:portfolio_extract_keyframes.py,True,exists
+file:portfolio_generate_results_index.py,True,exists
 file:portfolio_validate_artifacts.py,True,exists
 file:portfolio_retrain_bc_improved/bc_improved_best.pth,True,exists
 file:portfolio_retrain_bc_improved/bc_improved_normalizer.npz,True,exists
@@ -18,6 +19,9 @@ file:portfolio_retrain_bc_improved/robustness_summary.csv,True,exists
 file:portfolio_retrain_bc_improved/portfolio_summary.md,True,exists
 file:portfolio_retrain_bc_improved/bc_improved_demo.mp4,True,exists
 file:portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png,True,exists
+file:EXPERIMENTS.md,True,exists
+file:MODEL_CARD.md,True,exists
+file:RESULTS.md,True,exists
 main_avg_steps,True,"avg_steps=839.2, threshold=800.0"
 main_best_steps,True,"best_steps=1000, threshold=1000"
 main_video_path,True,video_path=portfolio_retrain_bc_improved\bc_improved_demo.mp4

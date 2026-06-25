@@ -1,5 +1,32 @@
 # 基于强化学习与模仿学习的人形机器人行走控制
 
+> Humanoid walking control with imitation learning and reinforcement learning baselines, built on MuJoCo / Loco-MuJoCo.
+
+![Improved BC keyframes](portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png)
+
+## 成果速览
+
+| 指标 | 原始 BC 重训 | 增强版 BC |
+| --- | ---: | ---: |
+| 平均步数 | 97.5 | 839.2 |
+| 最好步数 | 133 | 1000 |
+| 跑满 1000 步回合数 | 0/10 | 3/10 |
+| 平均奖励 | 93.76 | 776.75 |
+
+补充验证：
+
+- 稳定性诊断平均步数：`820.3`
+- 多 seed 鲁棒性 sweep 原始动作平均步数：`930.2`
+- 最终展示视频：`8392` 帧，约 `279.7s`
+- Artifact validation：`25/25` 项通过
+
+推荐入口：
+
+- 结果索引：`RESULTS.md`
+- 模型说明：`MODEL_CARD.md`
+- 实验复现：`EXPERIMENTS.md`
+- 一键检查：`python portfolio_cli.py validate`
+
 本项目基于 MuJoCo / Loco-MuJoCo 搭建人形机器人连续控制实验环境，围绕 `HumanoidTorque.run` 任务实现并评估行为克隆（BC）、PPO、SAC 等策略在人形机器人短时步态控制中的表现。
 
 项目重点不是宣称“已经实现长期稳定行走”，而是完整展示一个强化学习/模仿学习控制实验的工程流程：环境搭建、专家数据读取、策略网络训练、模型评估、视频录制、指标统计和实验对比。
@@ -46,8 +73,11 @@
 ├── portfolio_generate_report.py    # 新增：自动生成实验报告与 SVG 图表
 ├── portfolio_extract_keyframes.py  # 新增：从展示视频提取关键帧总览图
 ├── portfolio_validate_artifacts.py # 新增：项目产物完整性与指标阈值校验
+├── portfolio_generate_results_index.py # 新增：生成结果索引 RESULTS.md
 ├── portfolio_cli.py                # 新增：统一命令入口
 ├── EXPERIMENTS.md                  # 新增：实验复现命令与结果边界说明
+├── MODEL_CARD.md                   # 新增：主模型说明与使用边界
+├── RESULTS.md                      # 新增：核心结果和产物索引
 ├── portfolio_dagger_bc.py          # 新增：近似 DAgger 实验入口
 ├── portfolio_evaluate.py           # 新增：统一模型评估脚本
 ├── requirements_portfolio.txt      # 当前验证可运行的核心依赖
@@ -83,12 +113,14 @@ python -m pip install -r requirements_portfolio.txt
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py validate
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py report
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py keyframes
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py index
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py showcase
 ```
 
 - `validate`：检查核心脚本、模型权重、CSV 指标、视频、关键帧和视频元数据。
 - `report`：根据已有 CSV 重新生成 Markdown/SVG 报告。
 - `keyframes`：从最终展示视频重新生成关键帧总览图。
+- `index`：根据已有结果生成 `RESULTS.md`。
 - `showcase`：依次生成关键帧、校验产物并更新报告。
 
 更多复现实验命令见 `EXPERIMENTS.md`。
