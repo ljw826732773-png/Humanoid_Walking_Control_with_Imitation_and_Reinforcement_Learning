@@ -1,5 +1,7 @@
 # 基于强化学习与模仿学习的人形机器人行走控制
 
+[![Portfolio Checks](https://github.com/ljw826732773-png/Humanoid_Walking_Control_with_Imitation_and_Reinforcement_Learning/actions/workflows/portfolio-check.yml/badge.svg)](https://github.com/ljw826732773-png/Humanoid_Walking_Control_with_Imitation_and_Reinforcement_Learning/actions/workflows/portfolio-check.yml)
+
 > Humanoid walking control with imitation learning and reinforcement learning baselines, built on MuJoCo / Loco-MuJoCo.
 
 ![Improved BC keyframes](portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png)
@@ -18,7 +20,7 @@
 - 稳定性诊断平均步数：`820.3`
 - 多 seed 鲁棒性 sweep 原始动作平均步数：`930.2`
 - 最终展示视频：`8392` 帧，约 `279.7s`
-- Artifact validation：`25/25` 项通过
+- Artifact validation：`31/31` 项通过
 
 推荐入口：
 
@@ -75,6 +77,8 @@
 ├── portfolio_validate_artifacts.py # 新增：项目产物完整性与指标阈值校验
 ├── portfolio_generate_results_index.py # 新增：生成结果索引 RESULTS.md
 ├── portfolio_cli.py                # 新增：统一命令入口
+├── portfolio_static_checks.py      # 新增：无大依赖静态检查与 CI 入口
+├── .github/workflows/portfolio-check.yml # 新增：GitHub Actions 自动检查
 ├── EXPERIMENTS.md                  # 新增：实验复现命令与结果边界说明
 ├── MODEL_CARD.md                   # 新增：主模型说明与使用边界
 ├── RESULTS.md                      # 新增：核心结果和产物索引
@@ -111,6 +115,7 @@ python -m pip install -r requirements_portfolio.txt
 
 ```powershell
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py validate
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py static-check
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py report
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py keyframes
 C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py index
@@ -118,12 +123,29 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py showcase
 ```
 
 - `validate`：检查核心脚本、模型权重、CSV 指标、视频、关键帧和视频元数据。
+- `static-check`：运行不依赖 MuJoCo/PyTorch/OpenCV 的静态检查，供 GitHub Actions 使用。
 - `report`：根据已有 CSV 重新生成 Markdown/SVG 报告。
 - `keyframes`：从最终展示视频重新生成关键帧总览图。
 - `index`：根据已有结果生成 `RESULTS.md`。
 - `showcase`：依次生成关键帧、校验产物并更新报告。
 
 更多复现实验命令见 `EXPERIMENTS.md`。
+
+## GitHub Actions
+
+仓库新增 `.github/workflows/portfolio-check.yml`，在 push 和 pull request 时自动运行：
+
+```powershell
+python portfolio_static_checks.py
+```
+
+该检查不安装 MuJoCo、PyTorch 或 OpenCV，只用 Python 标准库完成：
+
+- 核心文件存在性检查。
+- 主要 CSV 指标阈值检查。
+- Python 脚本语法检查。
+- README / RESULTS / 自动报告中的本地图片链接检查。
+- 模型卡和实验说明中的结果边界检查。
 
 ## 一键评估已有权重
 

@@ -55,6 +55,11 @@
     "detail": "exists"
   },
   {
+    "name": "file:portfolio_static_checks.py",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
     "name": "file:portfolio_retrain_bc_improved/bc_improved_best.pth",
     "ok": true,
     "detail": "exists"
@@ -111,6 +116,11 @@
   },
   {
     "name": "file:RESULTS.md",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
+    "name": "file:.github/workflows/portfolio-check.yml",
     "ok": true,
     "detail": "exists"
   },

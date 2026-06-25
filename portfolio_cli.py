@@ -13,6 +13,7 @@ def main():
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("validate", help="Check that the committed portfolio artifacts are complete.")
+    subparsers.add_parser("static-check", help="Run dependency-free repository checks for CI.")
     subparsers.add_parser("report", help="Regenerate Markdown and SVG report artifacts from CSV files.")
     subparsers.add_parser("keyframes", help="Regenerate the keyframe contact sheet from the final demo video.")
     subparsers.add_parser("index", help="Regenerate RESULTS.md from committed artifacts.")
@@ -23,6 +24,8 @@ def main():
 
     if args.command == "validate":
         run([py, "portfolio_validate_artifacts.py"])
+    elif args.command == "static-check":
+        run([py, "portfolio_static_checks.py"])
     elif args.command == "report":
         run([py, "portfolio_generate_report.py"])
     elif args.command == "keyframes":
@@ -34,6 +37,7 @@ def main():
         run([py, "portfolio_validate_artifacts.py"])
         run([py, "portfolio_generate_report.py"])
         run([py, "portfolio_generate_results_index.py"])
+        run([py, "portfolio_static_checks.py"])
 
 
 if __name__ == "__main__":

@@ -24,6 +24,7 @@ REQUIRED_FILES = [
     "portfolio_extract_keyframes.py",
     "portfolio_generate_results_index.py",
     "portfolio_validate_artifacts.py",
+    "portfolio_static_checks.py",
     "portfolio_retrain_bc_improved/bc_improved_best.pth",
     "portfolio_retrain_bc_improved/bc_improved_normalizer.npz",
     "portfolio_retrain_bc_improved/bc_improved_eval.csv",
@@ -36,6 +37,7 @@ REQUIRED_FILES = [
     "EXPERIMENTS.md",
     "MODEL_CARD.md",
     "RESULTS.md",
+    ".github/workflows/portfolio-check.yml",
 ]
 
 

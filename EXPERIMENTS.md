@@ -13,6 +13,14 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py validate
 - `portfolio_retrain_bc_improved/artifact_validation.json`
 - `portfolio_retrain_bc_improved/artifact_validation.csv`
 
+无需安装 MuJoCo / PyTorch / OpenCV 的轻量静态检查：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py static-check
+```
+
+该命令也是 GitHub Actions 的检查入口。
+
 ## 展示材料生成
 
 ```powershell

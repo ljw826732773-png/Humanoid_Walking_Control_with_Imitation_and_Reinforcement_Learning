@@ -25,7 +25,7 @@ The sweep shows that naive action smoothing hurts this controller, so the final 
 
 ## Artifact Validation
 
-- Passed checks: 29/29
+- Passed checks: 31/31
 - Failed checks: 0
 
 ## Figures
