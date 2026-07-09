@@ -17,6 +17,7 @@ def main():
     subparsers.add_parser("report", help="Regenerate Markdown and SVG report artifacts from CSV files.")
     subparsers.add_parser("keyframes", help="Regenerate the keyframe contact sheet from the final demo video.")
     subparsers.add_parser("index", help="Regenerate RESULTS.md from committed artifacts.")
+    subparsers.add_parser("gallery", help="Regenerate VISUAL_GALLERY.md and the overview dashboard.")
     subparsers.add_parser("showcase", help="Regenerate report, keyframes, and artifact validation.")
 
     args = parser.parse_args()
@@ -32,8 +33,11 @@ def main():
         run([py, "portfolio_extract_keyframes.py"])
     elif args.command == "index":
         run([py, "portfolio_generate_results_index.py"])
+    elif args.command == "gallery":
+        run([py, "portfolio_generate_visual_gallery.py"])
     elif args.command == "showcase":
         run([py, "portfolio_extract_keyframes.py"])
+        run([py, "portfolio_generate_visual_gallery.py"])
         run([py, "portfolio_validate_artifacts.py"])
         run([py, "portfolio_generate_report.py"])
         run([py, "portfolio_generate_results_index.py"])

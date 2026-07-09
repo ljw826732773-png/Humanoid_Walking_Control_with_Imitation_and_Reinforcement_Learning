@@ -296,6 +296,9 @@ def main():
     }
 
     images = [
+        os.path.join(args.output_dir, "report_overview_dashboard.svg")
+        if os.path.exists(os.path.join(args.output_dir, "report_overview_dashboard.svg"))
+        else None,
         save_steps_comparison(data["comparison"], args.output_dir),
         save_training_loss(data["training"], args.output_dir),
         save_rollout_selection(data["rollout"], args.output_dir),

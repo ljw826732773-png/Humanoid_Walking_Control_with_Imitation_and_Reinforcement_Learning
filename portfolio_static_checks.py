@@ -14,6 +14,7 @@ PYTHON_FILES = [
     "portfolio_robustness_sweep.py",
     "portfolio_generate_report.py",
     "portfolio_generate_results_index.py",
+    "portfolio_generate_visual_gallery.py",
     "portfolio_extract_keyframes.py",
     "portfolio_validate_artifacts.py",
     "portfolio_static_checks.py",
@@ -25,12 +26,14 @@ REQUIRED_FILES = [
     "EXPERIMENTS.md",
     "MODEL_CARD.md",
     "RESULTS.md",
+    "VISUAL_GALLERY.md",
     "requirements_portfolio.txt",
     "portfolio_retrain_bc_improved/bc_improved_summary.csv",
     "portfolio_retrain_bc_improved/stability_summary.csv",
     "portfolio_retrain_bc_improved/robustness_summary.csv",
     "portfolio_retrain_bc_improved/artifact_validation.csv",
     "portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png",
+    "portfolio_retrain_bc_improved/report_overview_dashboard.svg",
     ".github/workflows/portfolio-check.yml",
 ]
 
@@ -123,7 +126,7 @@ def markdown_image_targets(path):
 
 
 def check_markdown_image_links():
-    for md_path in ["README.md", "RESULTS.md", "portfolio_retrain_bc_improved/portfolio_summary.md"]:
+    for md_path in ["README.md", "RESULTS.md", "VISUAL_GALLERY.md", "portfolio_retrain_bc_improved/portfolio_summary.md"]:
         base = os.path.dirname(md_path)
         for target in markdown_image_targets(md_path):
             if target.startswith(("http://", "https://")):
@@ -146,6 +149,9 @@ def check_result_docs_reference_limits():
     results = open("RESULTS.md", "r", encoding="utf-8").read()
     if "Artifact Inventory" not in results:
         fail("RESULTS.md must include artifact inventory")
+    gallery = open("VISUAL_GALLERY.md", "r", encoding="utf-8").read()
+    if gallery.count("![") < 7:
+        fail("VISUAL_GALLERY.md must include the dashboard and six evidence figures")
     pass_msg("result documentation boundaries present")
 
 

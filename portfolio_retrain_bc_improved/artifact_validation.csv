@@ -9,6 +9,7 @@ file:portfolio_robustness_sweep.py,True,exists
 file:portfolio_generate_report.py,True,exists
 file:portfolio_extract_keyframes.py,True,exists
 file:portfolio_generate_results_index.py,True,exists
+file:portfolio_generate_visual_gallery.py,True,exists
 file:portfolio_validate_artifacts.py,True,exists
 file:portfolio_static_checks.py,True,exists
 file:portfolio_retrain_bc_improved/bc_improved_best.pth,True,exists
@@ -23,6 +24,8 @@ file:portfolio_retrain_bc_improved/keyframes/bc_improved_keyframes.png,True,exis
 file:EXPERIMENTS.md,True,exists
 file:MODEL_CARD.md,True,exists
 file:RESULTS.md,True,exists
+file:VISUAL_GALLERY.md,True,exists
+file:portfolio_retrain_bc_improved/report_overview_dashboard.svg,True,exists
 file:.github/workflows/portfolio-check.yml,True,exists
 main_avg_steps,True,"avg_steps=839.2, threshold=800.0"
 main_best_steps,True,"best_steps=1000, threshold=1000"

@@ -50,6 +50,11 @@
     "detail": "exists"
   },
   {
+    "name": "file:portfolio_generate_visual_gallery.py",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
     "name": "file:portfolio_validate_artifacts.py",
     "ok": true,
     "detail": "exists"
@@ -116,6 +121,16 @@
   },
   {
     "name": "file:RESULTS.md",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
+    "name": "file:VISUAL_GALLERY.md",
+    "ok": true,
+    "detail": "exists"
+  },
+  {
+    "name": "file:portfolio_retrain_bc_improved/report_overview_dashboard.svg",
     "ok": true,
     "detail": "exists"
   },

@@ -23,6 +23,7 @@ REQUIRED_FILES = [
     "portfolio_generate_report.py",
     "portfolio_extract_keyframes.py",
     "portfolio_generate_results_index.py",
+    "portfolio_generate_visual_gallery.py",
     "portfolio_validate_artifacts.py",
     "portfolio_static_checks.py",
     "portfolio_retrain_bc_improved/bc_improved_best.pth",
@@ -37,6 +38,8 @@ REQUIRED_FILES = [
     "EXPERIMENTS.md",
     "MODEL_CARD.md",
     "RESULTS.md",
+    "VISUAL_GALLERY.md",
+    "portfolio_retrain_bc_improved/report_overview_dashboard.svg",
     ".github/workflows/portfolio-check.yml",
 ]
 

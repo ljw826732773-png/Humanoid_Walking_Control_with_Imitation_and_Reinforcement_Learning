@@ -29,6 +29,17 @@ C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py showcase
 
 该命令会依次生成最终视频关键帧、Markdown/SVG 报告，并校验核心产物。
 
+图文展示页可单独生成：
+
+```powershell
+C:\Users\ASUS\.conda\envs\rl_env\python.exe portfolio_cli.py gallery
+```
+
+输出：
+
+- `VISUAL_GALLERY.md`
+- `portfolio_retrain_bc_improved/report_overview_dashboard.svg`
+
 ## 主实验命令
 
 | 目的 | 命令 | 主要输出 |
